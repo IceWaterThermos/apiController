@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>API Controller</title>
+  <link rel="stylesheet" href="/static/common.css">
+  <link rel="stylesheet" href="/static/apicontroller.css">
+</head>
+<body>
+<div class="container">
+  <h1>API Controller</h1>
+
+  <div class="api-section">
+    <h2>GET Request</h2>
+    <div class="button-container">
+      <input type="text" id="getApi" placeholder="Enter GET API URL">
+      <button onclick="sendRequest('GET', document.getElementById('getApi').value)">Send</button>
+    </div>
+    <textarea id="getResult" readonly placeholder="Response will appear here"></textarea>
+  </div>
+
+  <div class="api-section">
+    <h2>POST Request</h2>
+    <div class="button-container">
+      <input type="text" id="postApi" placeholder="Enter POST API URL">
+      <button onclick="validateAndSend('POST', document.getElementById('postApi').value, document.getElementById('postData').value)">Send</button>
+    </div>
+    <textarea id="postData" placeholder="Enter data to POST"></textarea>
+    <textarea id="postResult" readonly placeholder="Response will appear here"></textarea>
+  </div>
+
+  <div class="api-section">
+    <h2>PUT Request</h2>
+    <div class="button-container">
+      <input type="text" id="putApi" placeholder="Enter PUT API URL">
+      <button onclick="validateAndSend('PUT', document.getElementById('putApi').value, document.getElementById('putData').value)">Send</button>
+    </div>
+    <textarea id="putData" placeholder="Enter data to PUT"></textarea>
+    <textarea id="putResult" readonly placeholder="Response will appear here"></textarea>
+  </div>
+
+  <div class="api-section">
+    <h2>DELETE Request</h2>
+    <div class="button-container">
+      <input type="text" id="deleteApi" placeholder="Enter DELETE API URL">
+      <button onclick="sendRequest('DELETE', document.getElementById('deleteApi').value)">Send</button>
+    </div>
+    <textarea id="deleteResult" readonly placeholder="Response will appear here"></textarea>
+  </div>
+
+  <button onclick="location.href='/menu'" class="menu-button">Back to Menu</button>
+</div>
+<script>
+  function validateAndSend(method, url, data = null) {
+    try {
+      // JSON 유효성 검사
+      if (data) {
+        JSON.parse(data);
+      }
+      sendRequest(method, url, data);
+    } catch (e) {
+      alert('Invalid JSON format.');
+    }
+  }
+
+  function sendRequest(method, url, data = null) {
+    let options = {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    };
+
+    if (data) {
+      options.body = JSON.stringify(JSON.parse(data));
+    }
+
+    fetch('/proxy?url=' + encodeURIComponent(url), options)
+            .then(response => response.text())
+            .then(result => {
+              if (method === 'GET') {
+                document.getElementById('getResult').value = result;
+              } else if (method === 'POST') {
+                document.getElementById('postResult').value = result;
+              } else if (method === 'PUT') {
+                document.getElementById('putResult').value = result;
+              } else if (method === 'DELETE') {
+                document.getElementById('deleteResult').value = result;
+              }
+            })
+            .catch(error => alert('Error: ' + error));
+  }
+</script>
+</body>
+</html>

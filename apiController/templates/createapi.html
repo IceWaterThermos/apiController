@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Create API</title>
+  <link rel="stylesheet" href="/static/common.css">
+  <link rel="stylesheet" href="/static/createapi.css">
+</head>
+<body>
+<div class="container">
+  <h1>Create API</h1>
+
+  <div class="input-section">
+    <input type="text" id="apiUrl" class="input-field" placeholder="Enter API URL">
+  </div>
+
+  <div class="json-section">
+    <textarea id="jsonInput" class="json-generator" placeholder="Enter JSON data"></textarea>
+  </div>
+
+  <button onclick="createApi()" class="create-button">Create</button>
+  <button onclick="location.href='/menu'" class="back-button">Back to Menu</button>
+</div>
+
+<script>
+  function createApi() {
+    const apiUrl = document.getElementById('apiUrl').value;
+    const jsonInput = document.getElementById('jsonInput').value;
+
+    // JSON 유효성 검사
+    try {
+      const jsonData = JSON.parse(jsonInput);
+
+      // 서버에 요청을 보내 API 핸들러 생성
+      fetch('/createapi', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url: apiUrl, json: jsonData }),
+      })
+              .then(response => response.json())
+              .then(data => {
+                if (data.success) {
+                  alert('API created successfully!');
+                } else {
+                  alert('Failed to create API.');
+                }
+              })
+              .catch(error => {
+                alert('Error creating API: ' + error);
+              });
+    } catch (e) {
+      alert('Invalid JSON format. Please check your input.');
+    }
+  }
+</script>
+</body>
+</html>

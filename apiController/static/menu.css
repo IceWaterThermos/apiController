@@ -1,0 +1,45 @@
+/* 기본 레이아웃 */
+body {
+    background-color: #f4f6f9;
+}
+
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 50px 0;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #3498db;
+    margin-bottom: 40px;
+}
+
+/* 버튼 스타일 */
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.button {
+    padding: 15px 30px;
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.button:hover {
+    background-color: #2980b9;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* 버튼 중앙 정렬 */
+.button-container a {
+    text-align: center;
+}
